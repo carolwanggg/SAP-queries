@@ -16,24 +16,17 @@ Table:
        
        Please also refer to here the all 2546 tables in SAP database.
        https://sap.erpref.com/?schema=BusinessOne9.3
+ 
+ 3. Query explanation
 
-SELECT T1."Project",TL."Name",TB."UniqueID",T1."OcrCode",T0."DocNum",T0."DocStatus", 
-T0."NumAtCard",T0."DocDate", T1."LineVendor", T2."CardName", T1."ItemCode", T1."Dscription",T1."ShipDate", T1."PQTReqDate" as "Required Date",   
-T1."LineTotal" as "Valore riga", ( (T1."OpenQty"*T1."PriceBefDi") * (case when T1."Rate" = 0 then 1 else T1."Rate" end ) ) as "Valore residuo",T1."U_VAR_CCOGE"
+The company wants to take the purchase request detail also link to each projects to communicate with project manager, this query takes the useful info from purchase request: document number, document status, vendor code, item code etc, project code) to link with project management table(uniqueID,DocStatus,NumatCard, DocDate) and Business partner table(CardName).
+
+I troduce also the file in SAP to insert the delivery date requirement to let the end-users to insert the dates fit their need.
+
+![image](https://user-images.githubusercontent.com/129491801/232595993-185b4654-2f2d-4999-9f04-140b8b85f7c6.png)
 
 
-FROM OPRQ T0 
-INNER JOIN PRQ1 T1 ON T0."DocEntry" = T1."DocEntry" 
-INNER JOIN OCRD T2 ON T1."LineVendor" = T2."CardCode"
 
-LEFT JOIN OPMG TO   ON T1."Project" = TO."FIPROJECT"
-LEFT JOIN PMG4 T4   ON TO."AbsEntry" = T4."AbsEntry" and  T0."DocNum"=T4."DOCNUM" and  T4."TYP"= T0."ObjType" and T4."LineNum"=T1."LineNum" 
-LEFT JOIN PMG1 TB   ON TO."AbsEntry" = TB."AbsEntry" and TB."POS" = T4."StageID"
-LEFT JOIN PMC2 TL   ON TB."StageID" = TL."StageID"
 
-WHERE T0."CANCELED" ='N' 
-AND T1."PQTReqDate" BETWEEN [%1%] AND [%2%] 
 
-ORDER BY T1."Project", T1."DocEntry"
 
-Join the project details(project code, project name) in project management table OPMG with purchase request detials (order code, document number, shipment date, product required date
