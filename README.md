@@ -7,7 +7,10 @@ IMPORTANT: include also the delivery date to see the expired order and purchase 
 
 2.Database
 Cloud: SAP HANA data warehouse
-Table: 1. OPRQ Purchase request
+Table:
+
+
+       1. OPRQ Purchase request
        2. OPMG Project Management
        3. OCRD Business Partner
        
